@@ -22,7 +22,7 @@ $('#gameArea').hide();
       let value = $('#user-input').val();
       $('#gameArea').show();
       $('#nameArea').replaceWith(`<p>Name: "${value}"</p>`);
-      $("#conversation").append(`<p>Welcome, ${value}!</p>`);
+      $("#conversation").text(`Welcome, ${value}!`);
       name=true;
       return true;
     });
