@@ -22,7 +22,7 @@ $('#gameArea').hide();
       let value = $('#user-input').val();
       $('#gameArea').show();
       $('#nameArea').replaceWith(`<p>Name: "${value}"</p>`);
-      $("#conversation").text(`Welcome, ${value}!`);
+      $("#conversation").append(`Welcome, ${value}!`);
       name=true;
       return true;
     });
@@ -98,9 +98,19 @@ function itemRoll() {
     $('#conversation').append(`<p>You attacked for ${attack} damage!</p>`);
     enemy.health = enemy.health - attack;
     $('#conversation').append(`<p>Big Mama health: ${enemy.health}</p>`);
-    checkHealth();
+    if (checkHealth() == 3) {;
+    enemyAttack();
+    }
   });
 };
+
+
+function enemyAttack() {
+  let attack = getRandom(1,5);
+    yourstatus.health = yourstatus.health - attack;
+    $('#conversation').append(`<p>Mama has inflicted ${attack} damage on you!</p>`);
+    checkHealth();
+}
 
 
 function checkSpaces() {
@@ -117,7 +127,17 @@ function checkHealth() {
     $('#conversation').append(`<p>Big Mama was defeated!</p>`);
     $('#forward').show();
     $('#attack').hide();
-    return;
+    return 1;
+  }
+
+  else if (yourstatus.health <= 0) {
+    $('#conversation').append(`<p>You died.</p>`);
+    $('#controls').hide();
+    return 2;
+  }
+
+  else {
+    return 3;
   }
 }
 
