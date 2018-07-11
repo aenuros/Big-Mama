@@ -21,7 +21,7 @@ $('#gameArea').hide();
       console.log("HELLO");
       let value = $('#user-input').val();
       $('#gameArea').show();
-      $('#nameArea').replaceWith(`<p>${value}</p>`);
+      $('#nameArea').replaceWith(`<p>Name: "${value}"</p>`);
       $("#conversation").append(`<p>Welcome, ${value}!</p>`);
       name=true;
       return true;
