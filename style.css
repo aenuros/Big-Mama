@@ -17,6 +17,7 @@ input[id="name-submit"]{
 
 #conversation {
 font-size:1.5em;
+width:600px;
 /*
   background-color:#000;
   color:#0F0;
