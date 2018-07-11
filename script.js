@@ -1,3 +1,4 @@
+//rails g scaffold Task description completed:boolean
 $(document).ready(function(){
 
 $('#gameArea').hide();
@@ -55,13 +56,37 @@ let enemy = {
 
 let yourstatus = {
   defaultHealth: 10,
-  health: 10
+  health: 10,
+  inventory: [],
+  arrayMaxValues:3
 }
 
 function itemRoll() {
-  dice = getRandom(1,4);
-  if(dice == 1) {
-    $('#conversation').append(`<p>You got a SMOOTHIE!</p>`);
+  if (yourstatus.inventory.length < yourstatus.arrayMaxValues) {
+    dice = getRandom(1,4);
+    if(dice == 2) {
+      $('#conversation').append(`<p>You got a SMOOTHIE!</p>`);
+      yourstatus.inventory.push("smoothie");
+      refreshInventory();
+    }
+    else if (dice == 1) {
+      $('#conversation').append(`<p>You got PEPPERSPRAY!</p>`);
+      yourstatus.inventory.push("pepperspray");
+      refreshInventory();
+    }
+   }
+}
+
+function refreshInventory() {
+  for (i=0;i<yourstatus.arrayMaxValues;i++) {
+    itemIndex = i+1;
+    if (yourstatus.inventory[i] == undefined) {
+      console.log('undefined');
+      $(`#item${itemIndex}`).replaceWith(`<li id="item${itemIndex}"><button value="inv" id="${itemIndex}">${itemIndex}</button>n/a</li>`);
+    }
+    else {
+    $(`#item${itemIndex}`).replaceWith(`<li id="item${itemIndex}"><button value="inv" id="${itemIndex}">${itemIndex}</button> ${yourstatus.inventory[i]}</li>`);
+    }
   }
 }
 
@@ -106,7 +131,7 @@ function itemRoll() {
 
 
 function enemyAttack() {
-  let attack = getRandom(1,5);
+  let attack = getRandom(1,4);
     yourstatus.health = yourstatus.health - attack;
     $('#conversation').append(`<p>Mama has inflicted ${attack} damage on you!</p>`);
     checkHealth();
@@ -154,6 +179,17 @@ goForward();
 
 
 goAttack();
+
+function smoothieUse() {
+  yourstatus.health = yourstatus.defaultHealth;
+  $('#conversation').append(`<p>You have used a smoothie! You are at ${yourstatus.health}.</p>`);
+}
+
+function peppersprayUse() {
+  enemy.status=3;
+  $('#conversation').append(`<p>You used pepperspray on Big Mama. She is currently unable to attack!</p>`);
+}
+
 
 
 
