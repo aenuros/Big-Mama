@@ -1,6 +1,11 @@
+body {
+  font-size:1.2em;
+}
+
 #conversation {
   background-color:#000;
   color:#0F0;
-  height:12em;
+  height:10em;
   overflow:scroll;
+  width:100%;
 }
