@@ -14,10 +14,29 @@ input[id="name-submit"]{
   font-size:1.5em;
 }
 
+@media only screen and (max-width:800px) {
+  #container {
+    width:290px;
+  }
+}
+
+ul li {
+  padding:9px;
+}
+
+button {
+  height:2.7em;
+  width:8em;
+}
+
+button[value="inv"]{
+  height:2.7em;
+  width:2.7em;
+  font-size:1em;
+}
 
 #conversation {
 font-size:1.5em;
-width:600px;
 /*
   background-color:#000;
   color:#0F0;
