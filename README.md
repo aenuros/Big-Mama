@@ -6,7 +6,7 @@ Big Mama is a turn-based game where you traverse through a corridor. Every turn,
 
 The project history is a bit disorganized due to me not being sure how I wanted to organize the original Big Mama project once I wanted a web version. All future work on Big Mama will be done here.
 
-#Updates
+# Updates
 
 15JUL2018 - Add feature to use smoothie and pepperspray; add feature to remove items when used.
 
