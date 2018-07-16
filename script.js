@@ -19,7 +19,7 @@ $('#gameArea').hide();
   function whatIsName() {
     //click submit button for name
     $('#name-submit').click(function() {
-      console.log("HELLO");
+      //console.log("HELLO");
       let value = $('#user-input').val();
       $('#gameArea').show();
       $('#nameArea').replaceWith(`<p>Name: "${value}"</p>`);
@@ -30,7 +30,7 @@ $('#gameArea').hide();
     //press enter
     $(document).keypress(function(key) {
       if(key.which === 13) {
-        console.log("HELLO");
+        //console.log("HELLO");
         let value = $('#user-input').val();
         $('#gameArea').show();
         $('#nameArea').replaceWith(`<p>Name:${value}</p>`);
@@ -43,7 +43,7 @@ $('#gameArea').hide();
 
   //moving forward
   let spaces = 0;
-  let winspace = 15;
+  let winspace = 55;
   let turn =0;
   let battlespace = false;
 
@@ -63,7 +63,7 @@ let yourstatus = {
 
 function itemRoll() {
   if (yourstatus.inventory.length < yourstatus.arrayMaxValues) {
-    dice = getRandom(1,4);
+    dice = getRandom(1,2);
     if(dice == 2) {
       $('#conversation').append(`<p>You got a SMOOTHIE!</p>`);
       yourstatus.inventory.push("smoothie");
@@ -85,7 +85,7 @@ function refreshInventory() {
       $(`#item${itemIndex}`).replaceWith(`<li id="item${itemIndex}"><button value="inv" id="${itemIndex}">${itemIndex}</button>n/a</li>`);
     }
     else {
-    $(`#item${itemIndex}`).replaceWith(`<li id="item${itemIndex}"><button value="inv" id="${itemIndex}">${itemIndex}</button> ${yourstatus.inventory[i]}</li>`);
+    $(`#item${itemIndex}`).replaceWith(`<li id="item${itemIndex}"><button value="inv" id="${itemIndex}" class="${yourstatus.inventory[i]}">${itemIndex}</button> ${yourstatus.inventory[i]}</li>`);
     }
   }
 }
@@ -105,7 +105,7 @@ function refreshInventory() {
     }
           else {
           itemRoll();
-          console.log("You clicked forward");
+          //console.log("You clicked forward");
           spaces++;
           $('#conversation').append(`<p>You have moved forward! You've traveled ${spaces} spaces.</p>`);
           }
@@ -131,12 +131,19 @@ function refreshInventory() {
 
 
 function enemyAttack() {
-  let attack = getRandom(1,4);
-    yourstatus.health = yourstatus.health - attack;
-    $('#conversation').append(`<p>Mama has inflicted ${attack} damage on you!</p>`);
-    checkHealth();
-}
 
+  if(enemy.status==0){
+      let attack = getRandom(1,4);
+        yourstatus.health = yourstatus.health - attack;
+        $('#conversation').append(`<p>Big Mama has inflicted ${attack} damage on you!</p>`);
+        $('#conversation').append(`<p>Your health: ${yourstatus.health}</p>`);
+        checkHealth();
+      }
+  else {
+    $('#conversation').append(`<p>Big Mama can't attack for ${enemy.status} turn(s)!`);
+    enemy.status--;
+  }
+}
 
 function checkSpaces() {
   if (spaces==winspace) {
@@ -152,6 +159,7 @@ function checkHealth() {
     $('#conversation').append(`<p>Big Mama was defeated!</p>`);
     $('#forward').show();
     $('#attack').hide();
+    battlespace = false;
     return 1;
   }
 
@@ -170,7 +178,34 @@ function enemyAppeared() {
   $('#attack').show();
   $('#forward').hide();
   enemy.health = enemy.defaultHealth;
+  battlespace = true;
 }
+
+function InvUse() {
+
+  //find out what you clicked, bind it so that it can see future appends
+  for (i=1;i<4;i++) {
+    $('ul').on("click", "#"+ i, function() {
+      let option = $(this).attr('id');
+      let item = $(this).attr('class');
+      console.log(item);
+        if (item == "smoothie") {
+          smoothieUse();
+        }
+        else if (item =="pepperspray") {
+          peppersprayUse();
+        }
+      //remove item from inventory and update
+      console.log(option);
+      realIndex = option-1;
+      console.log(yourstatus.inventory);
+      yourstatus.inventory.splice(realIndex,1);
+      refreshInventory();
+      console.log(yourstatus.inventory);
+    })
+  }
+
+};
 
 whatIsName();
 
@@ -180,9 +215,14 @@ goForward();
 
 goAttack();
 
+
+
 function smoothieUse() {
   yourstatus.health = yourstatus.defaultHealth;
   $('#conversation').append(`<p>You have used a smoothie! You are at ${yourstatus.health}.</p>`);
+  if (battlespace == true) {
+    enemyAttack();
+  }
 }
 
 function peppersprayUse() {
@@ -190,7 +230,7 @@ function peppersprayUse() {
   $('#conversation').append(`<p>You used pepperspray on Big Mama. She is currently unable to attack!</p>`);
 }
 
-
+InvUse();
 
 
 });
