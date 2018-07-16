@@ -179,6 +179,7 @@ function enemyAppeared() {
   $('#forward').hide();
   enemy.health = enemy.defaultHealth;
   battlespace = true;
+  enemy.status = 0;
 }
 
 function InvUse() {
